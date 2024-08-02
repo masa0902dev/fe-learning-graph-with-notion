@@ -7,8 +7,8 @@ export async function fetchFETasks(): Promise<Task[]> {
 }
 
 export interface Task {
-  id: string;
+  // id: string;
   date: string;
   sum: number;
-  span: number;
+  // span: number;
 }

@@ -88,10 +88,10 @@ async function fetchNextProps(nextCursor: string): Promise<any> {
 function makeRecord(results: any[]): Task[] {
   return results.map((result: any) => {
     return {
-      id: result.id,
+      // id: result.id,
       date: result.properties.date.date.start,
       sum: result.properties.sum.formula.number,
-      span: result.properties.span.formula.number,
+      // span: result.properties.span.formula.number,
     };
   });
 }

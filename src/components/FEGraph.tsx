@@ -10,6 +10,7 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { fetchFETasks, Task } from "../logic/fetchFETasks";
+import "../App.css";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -92,7 +93,7 @@ const ChartBar: FC = () => {
     loadTasks();
   }, []);
 
-  return <Bar options={options} data={data} />;
+  return <Bar options={options} data={data} className="graph-component" />;
 };
 
 export default ChartBar;

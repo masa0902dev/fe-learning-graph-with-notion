@@ -1,14 +1,18 @@
 import express, { Request, Response } from 'express';
 import { Client } from '@notionhq/client';
 import cors from 'cors';
+import dotenv from 'dotenv';
+import path from 'path';
+const __dirname = new URL('.', import.meta.url).pathname;
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const app = express();
 const PORT = process.env.REACT_APP_PORT || 4000;
-console.info('process.env.NOTION_API_KEY:', process.env.NOTION_API_KEY);
+console.info('process.env.REACT_APP_NOTION_API_KEY:', process.env.REACT_APP_NOTION_API_KEY);
 app.use(cors());
 app.use(express.json());
 
-const notion = new Client({ auth: process.env.NOTION_API_KEY });
+const notion = new Client({ auth: process.env.REACT_APP_NOTION_API_KEY });
 const DB_ID = 'b96bcf61cfc247b4881192013a1a970c';
 
 type FilterQueryType = {

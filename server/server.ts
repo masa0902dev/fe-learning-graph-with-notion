@@ -1,19 +1,20 @@
-import express, { Request, Response } from 'express';
-import { Client } from '@notionhq/client';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import path from 'path';
-const __dirname = new URL('.', import.meta.url).pathname;
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
+import express, { Request, Response } from "express";
+import { Client } from "@notionhq/client";
+import cors from "cors";
+import dotenv from "dotenv";
+import path from "path";
+import { Task } from "../src/logic/fetchFETasks";
+
+const __dirname = new URL(".", import.meta.url).pathname;
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 const app = express();
 const PORT = process.env.REACT_APP_PORT || 4000;
-console.info('process.env.REACT_APP_NOTION_API_KEY:', process.env.REACT_APP_NOTION_API_KEY);
 app.use(cors());
 app.use(express.json());
 
 const notion = new Client({ auth: process.env.REACT_APP_NOTION_API_KEY });
-const DB_ID = 'b96bcf61cfc247b4881192013a1a970c';
+const DB_ID = "b96bcf61cfc247b4881192013a1a970c";
 
 type FilterQueryType = {
   and: [
@@ -29,9 +30,8 @@ type FilterQueryType = {
         equals: string;
       };
     }
-  ]
+  ];
 };
-
 type SortQueryType = {
   property: string;
   direction: "ascending" | "descending";
@@ -40,31 +40,23 @@ type SortQueryType = {
 const filterQuery: FilterQueryType = {
   and: [
     {
-      property: 'task',
+      property: "task",
       rich_text: {
-        equals: 'k',
+        equals: "k",
       },
     },
     {
-      property: 'status',
+      property: "status",
       status: {
-        equals: 'Done',
+        equals: "Done",
       },
     },
   ],
 };
-
 const sortQuery: SortQueryType = {
-  property: 'date',
-  direction: 'ascending',
+  property: "date",
+  direction: "ascending",
 };
-
-interface Task {
-  id: string;
-  date: string;
-  sum: number;
-  span: number;
-}
 
 async function fetchMatchedTask(): Promise<any> {
   try {
@@ -104,7 +96,7 @@ function makeRecord(results: any[]): Task[] {
   });
 }
 
-app.get('/api/fetasks', async (req: Request, res: Response) => {
+app.get("/api/fetasks", async (req: Request, res: Response) => {
   const feTasksRes: any = await fetchMatchedTask();
   let feTasks: Task[] = makeRecord(feTasksRes.results);
 

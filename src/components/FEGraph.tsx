@@ -24,6 +24,15 @@ const options = {
       text: "基本情報技術者試験 学習時間",
     },
   },
+  scales: {
+    y: {
+      beginAtZero: true,
+      title: {
+        display: true,
+        text: '時間 (h)'
+      }
+    }
+  }
 };
 
 type DataType = {
@@ -55,8 +64,15 @@ const ChartBar: FC = () => {
     const loadTasks = async () => {
       try {
         const tasks: Task[] = await fetchFETasks();
-        const labels = tasks.map((task) => task.date);
-        const values = tasks.map((task) => task.sum);
+        const dateMap = tasks.reduce((acc, task) => {
+          if (!acc[task.date]) {
+            acc[task.date] = { sum: 0 };
+          }
+          acc[task.date].sum += task.sum;
+          return acc;
+        }, {} as Record<string, { sum: number }>);
+        const labels = Object.keys(dateMap);
+        const values = labels.map(date => dateMap[date].sum);
         setData({
           labels: labels,
           datasets: [

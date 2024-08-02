@@ -65,15 +65,23 @@ const ChartBar: FC = () => {
     const loadTasks = async () => {
       try {
         const tasks: Task[] = await fetchFETasks();
-        const dateMap = tasks.reduce((acc, task) => {
-          if (!acc[task.date]) {
-            acc[task.date] = { sum: 0 };
-          }
-          acc[task.date].sum += task.sum;
-          return acc;
-        }, {} as Record<string, { sum: number }>);
-        const labels = Object.keys(dateMap);
-        const values = labels.map(date => dateMap[date].sum);
+        // データが日付で昇順なのを利用してデータ構造を初期化
+        const firstDate = tasks[0].date;
+        const lastDate = tasks[tasks.length - 1].date;
+        const dateMap = new Map<string, number>();
+        const tmpRoopDate = new Date(firstDate);
+        while (tmpRoopDate <= new Date(lastDate)) {
+          dateMap.set(tmpRoopDate.toISOString().split("T")[0], 0);
+          tmpRoopDate.setDate(tmpRoopDate.getDate() + 1);
+        }
+
+        tasks.forEach((task) => {
+          const sum = dateMap.get(task.date) || 0;
+          dateMap.set(task.date, sum + task.sum);
+        });
+
+        const labels = Array.from(dateMap.keys());
+        const values = Array.from(dateMap.values());
         setData({
           labels: labels,
           datasets: [

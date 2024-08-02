@@ -18,11 +18,11 @@ const options = {
   responsive: true,
   plugins: {
     legend: {
-      position: "top" as const,
+      display: false,
     },
     title: {
       display: true,
-      text: "基本情報技術者試験 学習時間",
+      text: "FE Learning Time",
     },
   },
   scales: {
@@ -30,10 +30,10 @@ const options = {
       beginAtZero: true,
       title: {
         display: true,
-        text: '時間 (h)'
-      }
-    }
-  }
+        text: "Time (h)",
+      },
+    },
+  },
 };
 
 type DataType = {

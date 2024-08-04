@@ -13,6 +13,10 @@ const PORT = process.env.REACT_APP_PORT || 4000;
 app.use(express.json());
 app.use(cors());
 
+app.get("/api", async (req: Request, res: Response) => {
+  res.json({ message: "Hello World" });
+});
+
 app.get("/api/fetasks", async (req: Request, res: Response) => {
   const feTasksRes: any = await fetchMatchedTask();
   let feTasks: Task[] = makeRecord(feTasksRes.results);

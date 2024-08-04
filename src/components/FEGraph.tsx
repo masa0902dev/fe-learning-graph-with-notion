@@ -1,4 +1,5 @@
 import { FC, useState, useEffect } from "react";
+import { Helmet } from "react-helmet";
 import {
   Chart as ChartJS,
   CategoryScale,

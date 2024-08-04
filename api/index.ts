@@ -10,8 +10,25 @@ dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 const app = express();
 const PORT = process.env.REACT_APP_PORT || 4000;
-app.use(cors());
 app.use(express.json());
+app.use(cors());
+
+app.get("/api/fetasks", async (req: Request, res: Response) => {
+  const feTasksRes: any = await fetchMatchedTask();
+  let feTasks: Task[] = makeRecord(feTasksRes.results);
+
+  let hasMore: boolean = feTasksRes.has_more;
+  while (hasMore) {
+    const nextTasks: any = await fetchNextProps(feTasksRes.next_cursor);
+    feTasks = feTasks.concat(makeRecord(nextTasks.results));
+    hasMore = nextTasks.has_more;
+  }
+  res.json(feTasks);
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on PORT ${PORT}`);
+});
 
 const notion = new Client({ auth: process.env.REACT_APP_NOTION_API_KEY });
 const DB_ID = "b96bcf61cfc247b4881192013a1a970c";
@@ -95,20 +112,3 @@ function makeRecord(results: any[]): Task[] {
     };
   });
 }
-
-app.get("/api/fetasks", async (req: Request, res: Response) => {
-  const feTasksRes: any = await fetchMatchedTask();
-  let feTasks: Task[] = makeRecord(feTasksRes.results);
-
-  let hasMore: boolean = feTasksRes.has_more;
-  while (hasMore) {
-    const nextTasks: any = await fetchNextProps(feTasksRes.next_cursor);
-    feTasks = feTasks.concat(makeRecord(nextTasks.results));
-    hasMore = nextTasks.has_more;
-  }
-  res.json(feTasks);
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on PORT ${PORT}`);
-});

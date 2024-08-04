@@ -1,4 +1,5 @@
 import { FC, useState, useEffect } from "react";
+import { Box } from "@mui/material";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -47,7 +48,7 @@ type DataType = {
   }[];
 };
 
-const ChartBar: FC = () => {
+const FEGraph: FC = () => {
   const [data, setData] = useState<DataType>({
     labels: [],
     datasets: [
@@ -101,7 +102,11 @@ const ChartBar: FC = () => {
     loadTasks();
   }, []);
 
-  return <Bar options={options} data={data} className="graph-component" />;
+  return (
+    <Box className='fe-graph'>
+      <Bar options={options} data={data} className="graph" />
+    </Box>
+  )
 };
 
-export default ChartBar;
+export default FEGraph;

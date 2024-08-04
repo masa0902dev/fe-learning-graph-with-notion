@@ -40,7 +40,7 @@
 
 
 
-.graph-component {
+.graph {
   width: clamp(360px, 80vw, 1500px) !important;
   margin: 0 auto;
 }

@@ -1,10 +1,14 @@
 import './App.css';
-import ChartBar from './components/FEGraph';
+import FEGraph from './components/FEGraph';
+import Author from './components/Author';
+import Description from './components/Description';
 
 function App() {
   return (
     <div className="App">
-      <ChartBar />
+      <FEGraph />
+      <Author />
+      <Description />
     </div>
   );
 }

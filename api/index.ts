@@ -15,14 +15,15 @@ app.use(cors());
 
 // parameter-----------------------------------
 const TASK_PROPERTY = "task";
-const TASK_NAME = "k";
+const TASK_NAME = "rails";
+
+const DB_ID = "b96bcf61cfc247b4881192013a1a970c";
 // parameter-----------------------------------
 
 
 app.get("/api", async (req: Request, res: Response) => {
   res.json({ message: "Hello World" });
 });
-
 app.get("/api/fetasks", async (req: Request, res: Response) => {
   const feTasksRes: any = await fetchMatchedTask();
   let feTasks: Task[] = makeRecord(feTasksRes.results);
@@ -41,7 +42,6 @@ app.listen(PORT, () => {
 });
 
 const notion = new Client({ auth: process.env.REACT_APP_NOTION_API_KEY });
-const DB_ID = "b96bcf61cfc247b4881192013a1a970c";
 
 type FilterQueryType = {
   and: [

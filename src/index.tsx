@@ -13,7 +13,7 @@ root.render(
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="author" content="masa0902dev" />
-        <title>FE Learning Time | masa0902dev</title>
+        <title>Rails Learning Time | masa0902dev</title>
         <link rel="icon" href="/public/favicon.ico" />
       </Helmet>
       <App />

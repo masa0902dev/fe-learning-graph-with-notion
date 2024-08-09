@@ -23,10 +23,10 @@ code {
 }
 
 
-.fe-graph {
+.task-graph-wrapper {
   max-height: 58vh;
 }
-.graph {
+.task-graph {
   width: clamp(360px, 80vw, 1500px) !important;
   margin: 0 auto;
 }

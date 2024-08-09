@@ -10,7 +10,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import { fetchFETasks, Task } from "../logic/fetchFETasks";
+import { fetchFETasks, Task } from "../logic/fetchTasks";
 import "../App.css";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -23,7 +23,7 @@ const options = {
     },
     title: {
       display: true,
-      text: "FE Learning Time",
+      text: "Rails Learning Time",
     },
   },
   scales: {
@@ -48,7 +48,7 @@ type DataType = {
   }[];
 };
 
-const FEGraph: FC = () => {
+const TaskGraph: FC = () => {
   const [data, setData] = useState<DataType>({
     labels: [],
     datasets: [
@@ -103,10 +103,10 @@ const FEGraph: FC = () => {
   }, []);
 
   return (
-    <Box className='fe-graph'>
-      <Bar options={options} data={data} className="graph" />
+    <Box className='task-graph-wrapper'>
+      <Bar options={options} data={data} className="task-graph" />
     </Box>
   )
 };
 
-export default FEGraph;
+export default TaskGraph;

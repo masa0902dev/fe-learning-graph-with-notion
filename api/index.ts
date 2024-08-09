@@ -3,7 +3,7 @@ import { Client } from "@notionhq/client";
 import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
-import { Task } from "../src/logic/fetchFETasks";
+import { Task } from "../src/logic/fetchTasks";
 
 const __dirname = new URL(".", import.meta.url).pathname;
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
@@ -12,6 +12,12 @@ const app = express();
 const PORT = process.env.REACT_APP_PORT || 4000;
 app.use(express.json());
 app.use(cors());
+
+// parameter-----------------------------------
+const TASK_PROPERTY = "task";
+const TASK_NAME = "k";
+// parameter-----------------------------------
+
 
 app.get("/api", async (req: Request, res: Response) => {
   res.json({ message: "Hello World" });
@@ -61,9 +67,9 @@ type SortQueryType = {
 const filterQuery: FilterQueryType = {
   and: [
     {
-      property: "task",
+      property: TASK_PROPERTY,
       rich_text: {
-        equals: "k",
+        equals: TASK_NAME,
       },
     },
     {

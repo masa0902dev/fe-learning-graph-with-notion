@@ -3,7 +3,7 @@ import { Client } from "@notionhq/client";
 import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
-import { Task } from "../src/logic/fetchFETasks";
+import { Task } from "../src/logic/fetchTasks";
 
 const __dirname = new URL(".", import.meta.url).pathname;
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
@@ -13,10 +13,17 @@ const PORT = process.env.REACT_APP_PORT || 4000;
 app.use(express.json());
 app.use(cors());
 
+// parameter-----------------------------------
+const TASK_PROPERTY = "task";
+const TASK_NAME = "rails";
+
+const DB_ID = "b96bcf61cfc247b4881192013a1a970c";
+// parameter-----------------------------------
+
+
 app.get("/api", async (req: Request, res: Response) => {
   res.json({ message: "Hello World" });
 });
-
 app.get("/api/fetasks", async (req: Request, res: Response) => {
   const feTasksRes: any = await fetchMatchedTask();
   let feTasks: Task[] = makeRecord(feTasksRes.results);
@@ -35,7 +42,6 @@ app.listen(PORT, () => {
 });
 
 const notion = new Client({ auth: process.env.REACT_APP_NOTION_API_KEY });
-const DB_ID = "b96bcf61cfc247b4881192013a1a970c";
 
 type FilterQueryType = {
   and: [
@@ -61,9 +67,9 @@ type SortQueryType = {
 const filterQuery: FilterQueryType = {
   and: [
     {
-      property: "task",
+      property: TASK_PROPERTY,
       rich_text: {
-        equals: "k",
+        equals: TASK_NAME,
       },
     },
     {

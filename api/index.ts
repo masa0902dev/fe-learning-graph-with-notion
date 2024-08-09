@@ -15,6 +15,7 @@ app.use(cors());
 
 // parameter-----------------------------------
 const TASK_PROPERTY = "task";
+const EQUALS_OR_CONTAINS = "contains";
 const TASK_NAME = "rails";
 
 const DB_ID = "b96bcf61cfc247b4881192013a1a970c";
@@ -48,7 +49,7 @@ type FilterQueryType = {
     {
       property: string;
       rich_text: {
-        equals: string;
+        [EQUALS_OR_CONTAINS]: string;
       };
     },
     {
@@ -69,7 +70,7 @@ const filterQuery: FilterQueryType = {
     {
       property: TASK_PROPERTY,
       rich_text: {
-        equals: TASK_NAME,
+        [EQUALS_OR_CONTAINS]: TASK_NAME,
       },
     },
     {

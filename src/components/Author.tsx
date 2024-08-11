@@ -1,6 +1,5 @@
 import React from 'react'
 import { Box, Card } from '@mui/material'
-import '../App.css';
 
 const Author: React.FC = () => {
   return (

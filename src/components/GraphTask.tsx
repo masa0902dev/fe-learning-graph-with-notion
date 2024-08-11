@@ -10,45 +10,14 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import { fetchFETasks, Task } from "../logic/fetchTasks";
-import "../App.css";
-
+import { fetchTasks, Task } from "../logic/fetchTasks";
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      display: false,
-    },
-    title: {
-      display: true,
-      text: "Rails Learning Time",
-    },
-  },
-  scales: {
-    y: {
-      beginAtZero: true,
-      title: {
-        display: true,
-        text: "Time (h)",
-      },
-    },
-  },
-};
+interface GraphTaskProps {
+  taskName: string;
+}
 
-type DataType = {
-  labels: string[];
-  datasets: {
-    label: string;
-    data: number[];
-    backgroundColor: string;
-    borderColor: string;
-    borderWidth: number;
-  }[];
-};
-
-const TaskGraph: FC = () => {
+const GraphTask: FC<GraphTaskProps> = ({ taskName }) => {
   const [data, setData] = useState<DataType>({
     labels: [],
     datasets: [
@@ -63,9 +32,9 @@ const TaskGraph: FC = () => {
   });
 
   useEffect(() => {
-    const loadTasks = async () => {
+    (async () => {
       try {
-        const tasks: Task[] = await fetchFETasks();
+        const tasks: Task[] = await fetchTasks(taskName);
         // データが日付で昇順なのを利用してデータ構造を初期化
         const firstDate = tasks[0].date;
         const lastDate = tasks[tasks.length - 1].date;
@@ -98,15 +67,47 @@ const TaskGraph: FC = () => {
       } catch (error) {
         console.error("Error fetching tasks:", error);
       }
-    };
-    loadTasks();
-  }, []);
+    })();
+  }, [taskName]);
 
   return (
-    <Box className='task-graph-wrapper'>
+    <Box className="task-graph-wrapper">
       <Bar options={options} data={data} className="task-graph" />
     </Box>
-  )
+  );
 };
 
-export default TaskGraph;
+const options = {
+  responsive: true,
+  plugins: {
+    legend: {
+      display: false,
+    },
+    title: {
+      display: true,
+      text: "Notion Task Time",
+    },
+  },
+  scales: {
+    y: {
+      beginAtZero: true,
+      title: {
+        display: true,
+        text: "Time (h)",
+      },
+    },
+  },
+};
+
+type DataType = {
+  labels: string[];
+  datasets: {
+    label: string;
+    data: number[];
+    backgroundColor: string;
+    borderColor: string;
+    borderWidth: number;
+  }[];
+};
+
+export default GraphTask;

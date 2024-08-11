@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch TypeScript with tsx",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["tsx", "${file}"],
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}

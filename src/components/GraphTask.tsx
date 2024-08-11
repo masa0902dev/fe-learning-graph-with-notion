@@ -11,7 +11,6 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { fetchFETasks, Task } from "../logic/fetchTasks";
-import "../App.css";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -23,7 +22,7 @@ const options = {
     },
     title: {
       display: true,
-      text: "Rails Learning Time",
+      text: "Notion Task Time",
     },
   },
   scales: {
@@ -48,7 +47,7 @@ type DataType = {
   }[];
 };
 
-const TaskGraph: FC = () => {
+const GraphTask: FC = () => {
   const [data, setData] = useState<DataType>({
     labels: [],
     datasets: [
@@ -109,4 +108,4 @@ const TaskGraph: FC = () => {
   )
 };
 
-export default TaskGraph;
+export default GraphTask;

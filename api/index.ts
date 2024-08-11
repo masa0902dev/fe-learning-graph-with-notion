@@ -16,26 +16,29 @@ app.use(cors());
 // parameter-----------------------------------
 const TASK_PROPERTY = "task";
 const EQUALS_OR_CONTAINS = "contains";
-const TASK_NAME = "rails";
 
 const DB_ID = "b96bcf61cfc247b4881192013a1a970c";
 // parameter-----------------------------------
 
-
 app.get("/api", async (req: Request, res: Response) => {
-  res.json({ message: "Hello World" });
+  res.json({
+    message: "Hello, World!",
+    request: req.query,
+  });
 });
-app.get("/api/fetasks", async (req: Request, res: Response) => {
-  const feTasksRes: any = await fetchMatchedTask();
-  let feTasks: Task[] = makeRecord(feTasksRes.results);
 
-  let hasMore: boolean = feTasksRes.has_more;
+app.get("/api/tasks", async (req: Request, res: Response) => {
+  const taskName = req.query.taskName as string;
+  const tasksRes: any = await fetchMatchedTask(taskName);
+  let taskRecords: Task[] = makeRecord(tasksRes.results);
+
+  let hasMore: boolean = tasksRes.has_more;
   while (hasMore) {
-    const nextTasks: any = await fetchNextProps(feTasksRes.next_cursor);
-    feTasks = feTasks.concat(makeRecord(nextTasks.results));
+    const nextTasks: any = await fetchNextProps(tasksRes.next_cursor, taskName);
+    taskRecords = taskRecords.concat(makeRecord(nextTasks.results));
     hasMore = nextTasks.has_more;
   }
-  res.json(feTasks);
+  res.json(taskRecords);
 });
 
 app.listen(PORT, () => {
@@ -65,32 +68,34 @@ type SortQueryType = {
   direction: "ascending" | "descending";
 };
 
-const filterQuery: FilterQueryType = {
-  and: [
-    {
-      property: TASK_PROPERTY,
-      rich_text: {
-        [EQUALS_OR_CONTAINS]: TASK_NAME,
+const makeFilterQuery = (taskName: string): FilterQueryType => {
+  return {
+    and: [
+      {
+        property: TASK_PROPERTY,
+        rich_text: {
+          [EQUALS_OR_CONTAINS]: taskName,
+        },
       },
-    },
-    {
-      property: "status",
-      status: {
-        equals: "Done",
+      {
+        property: "status",
+        status: {
+          equals: "Done",
+        },
       },
-    },
-  ],
+    ],
+  };
 };
 const sortQuery: SortQueryType = {
   property: "date",
   direction: "ascending",
 };
 
-async function fetchMatchedTask(): Promise<any> {
+async function fetchMatchedTask(taskName: string): Promise<any> {
   try {
     const res = await notion.databases.query({
       database_id: DB_ID,
-      filter: filterQuery,
+      filter: makeFilterQuery(taskName),
       sorts: [sortQuery],
     });
     return res;
@@ -99,12 +104,12 @@ async function fetchMatchedTask(): Promise<any> {
   }
 }
 
-async function fetchNextProps(nextCursor: string): Promise<any> {
+async function fetchNextProps(nextCursor: string, taskName: string): Promise<any> {
   try {
     const res = await notion.databases.query({
       database_id: DB_ID,
       start_cursor: nextCursor,
-      filter: filterQuery,
+      filter: makeFilterQuery(taskName),
       sorts: [sortQuery],
     });
     return res;

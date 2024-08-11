@@ -1,24 +1,16 @@
 import { Box, Button, Input } from "@mui/material";
-import { FC, useState } from "react";
+import { FC } from "react";
 
-const InputTask: FC = () => {
-  const [task, setTask] = useState({
-    input: "rails",
-    taskName: "rails",
-  });
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTask({
-      ...task,
-      input: e.target.value,
-    });
+interface InputTaskProps {
+  task: {
+    input: string;
+    taskName: string;
   };
-  const handleClick = () => {
-    setTask({
-      ...task,
-      taskName: task.input,
-    });
-  };
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleClick: () => void;
+}
 
+const InputTask: FC<InputTaskProps> = ({ task, handleInputChange, handleClick }) => {
   return (
     <Box className="item-width input-wrapper">
       <Input
@@ -39,4 +31,5 @@ const InputTask: FC = () => {
     </Box>
   );
 };
+
 export default InputTask;

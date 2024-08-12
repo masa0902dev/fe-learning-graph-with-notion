@@ -13,12 +13,12 @@ const PORT = process.env.REACT_APP_PORT || 4000;
 app.use(express.json());
 app.use(cors());
 
-// parameter-----------------------------------
+// ----------------------------------------------
 const TASK_PROPERTY = "task";
 const EQUALS_OR_CONTAINS = "contains";
 
 const DB_ID = "b96bcf61cfc247b4881192013a1a970c";
-// parameter-----------------------------------
+// ----------------------------------------------
 
 app.get("/api", async (req: Request, res: Response) => {
   res.json({
